@@ -14,14 +14,14 @@ $task_groups = @("<TASK_GROUP_ID>")
 foreach($taskg in $task_groups){
    
     # Get all build definitions.
-    $definitions = Invoke-WebRequest -Uri "$($basu_uri)/build/definitions?api-version=6.1-preview.6" -Headers $AzureDevOpsAuthenicationHeader -Method Get;
+    $definitions = Invoke-WebRequest -Uri "$($basu_uri)/build/definitions?api-version=6.1-preview.6" -Headers $headers -Method Get;
     $definitions = ($definitions.Content | ConvertFrom-Json ).value;
 
     # Loop over all definitions.
     foreach($def in $definitions){
     
         # Get definition data by id.
-        $defData = Invoke-WebRequest -Uri "$($basu_uri)/build/definitions/$($def.id)?api-version=6.1-preview.6" -Headers $AzureDevOpsAuthenicationHeader -Method Get;
+        $defData = Invoke-WebRequest -Uri "$($basu_uri)/build/definitions/$($def.id)?api-version=6.1-preview.6" -Headers $headers -Method Get;
         $defData = $defData.Content | ConvertFrom-Json;
 
         $isUsingTaskGroup = $defData.process.phases[0].steps | Where-Object {$_.task.id -eq $taskg}
