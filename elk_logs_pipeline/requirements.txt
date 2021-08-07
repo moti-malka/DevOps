@@ -1,0 +1,5 @@
+flask==2.0.1
+flask_restful
+azure-devops==5.0.0b5
+msrest
+python-dotenv
