@@ -1,0 +1,28 @@
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+
+- task: Kubernetes@1
+  inputs:
+    connectionType: 'Azure Resource Manager'
+    azureSubscriptionEndpoint: 'PM8(38638631-bf5e-4bc6-86d0-db72f380ae5b)'
+    azureResourceGroup: 'rg-pm8-dev'
+    kubernetesCluster: 'aks-pm8-dev'
+    useClusterAdmin: true
+    command: 'login'
+
+- task: PythonScript@0
+  inputs:
+    scriptSource: 'filePath'
+    scriptPath: '$(System.DefaultWorkingDirectory)/k8s-best-practies.py'
+    
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(System.DefaultWorkingDirectory)/audit.json'
+    artifact: 'drop'
+    publishLocation: 'pipeline'
